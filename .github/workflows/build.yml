@@ -28,7 +28,7 @@ jobs:
     - name: Setup Gradle wrapper (Fallback)
       working-directory: ./vanta
       if: hashFiles('vanta/gradlew') == ''
-      run: gradle wrapper
+      run: gradle wrapper --gradle-version 8.4
 
     - name: Build Debug APK
       working-directory: ./vanta
