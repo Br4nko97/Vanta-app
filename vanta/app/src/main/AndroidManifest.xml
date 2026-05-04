@@ -33,6 +33,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".BixbyInterceptorActivity"
+            android:exported="true"
+            android:label="Vanta Bixby Hook"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".service.VantaAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"

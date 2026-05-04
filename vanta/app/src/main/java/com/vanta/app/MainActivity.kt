@@ -81,6 +81,11 @@ class MainActivity : ComponentActivity() {
                             capturedKey = capturedKey,
                             onClearKey = { capturedKeyFlow.value = null },
                             onSave = { key, wfName, steps ->
+                                if (steps.isEmpty() && key == 9999) {
+                                    // Triggered by "Forza Bixby", just set the captured key
+                                    capturedKeyFlow.value = 9999
+                                    return@CreateBindingScreen
+                                }
                                 kotlinx.coroutines.CoroutineScope(Dispatchers.IO).launch {
                                     val dao = database.vantaDao()
                                     val wfId = dao.insertWorkflow(Workflow(name = wfName))
@@ -195,9 +200,14 @@ fun CreateBindingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 if (capturedKey == null) {
                     Text("In ascolto... (premi Volume Su, Volume Giù, ecc.)", color = MaterialTheme.colorScheme.secondary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = { onClearKey(); onSave(9999, "Bixby (S10)", emptyList()) }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)) {
+                        Text("Forza Assegnazione Tasto Bixby (S10)", color = MaterialTheme.colorScheme.onTertiary)
+                    }
                 } else {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                        Text("Tasto Rilevato: $capturedKey", color = MaterialTheme.colorScheme.onSurface)
+                        val keyName = if (capturedKey == 9999) "Bixby (Speciale)" else "$capturedKey"
+                        Text("Tasto Rilevato: $keyName", color = MaterialTheme.colorScheme.onSurface)
                         TextButton(onClick = onClearKey) { Text("Riprova") }
                     }
                 }
