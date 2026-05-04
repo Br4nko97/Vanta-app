@@ -3,7 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ "main", "master" ]
-  workflow_dispatch: # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,19 +21,21 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
+      working-directory: ./vanta
       run: chmod +x gradlew
-      # If gradlew is missing, we can generate it using a local gradle installation in the runner
       continue-on-error: true
 
     - name: Setup Gradle wrapper (Fallback)
-      if: hashFiles('gradlew') == ''
+      working-directory: ./vanta
+      if: hashFiles('vanta/gradlew') == ''
       run: gradle wrapper
 
     - name: Build Debug APK
+      working-directory: ./vanta
       run: ./gradlew assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: Vanta-App-Debug-APK
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: vanta/app/build/outputs/apk/debug/app-debug.apk
