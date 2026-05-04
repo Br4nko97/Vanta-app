@@ -209,8 +209,7 @@ fun CreateBindingScreen(
             value = workflowName,
             onValueChange = { workflowName = it },
             label = { Text("Nome Automazione") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground)
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
